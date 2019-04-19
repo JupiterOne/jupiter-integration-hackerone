@@ -1,0 +1,14 @@
+{
+  "name": "hackerone-client",
+  "version": "1.0.0-cdf74231",
+  "description": "A node.js client to interact with the Hackerone api",
+  "main": "/src/index.js",
+  "scripts": {},
+  "author": "Jesse Kinser (@securitybites)",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "yalc": "^1.0.0-pre.27"
+  }
+}

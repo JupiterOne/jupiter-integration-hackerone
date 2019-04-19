@@ -1,0 +1,2 @@
+declare module "hackerone-client";
+

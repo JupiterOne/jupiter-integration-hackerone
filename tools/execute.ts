@@ -10,11 +10,8 @@ async function run(): Promise<void> {
   const logger = createLogger({ name: "local", level: TRACE });
 
   const integrationConfig = {
-    // providerApiToken: process.env.PROVIDER_LOCAL_EXECUTION_API_TOKEN
-  };
-
-  const invocationArgs = {
-    // providerPrivateKey: process.env.PROVIDER_LOCAL_EXECUTION_PRIVATE_KEY
+    hackeroneApiKey: process.env.HACKERONE_API_KEY,
+    hackeroneApiKeyName: process.env.HACKERONE_API_KEY_NAME,
   };
 
   logger.info(
@@ -22,7 +19,7 @@ async function run(): Promise<void> {
       integrationConfig,
       logger,
       executionHandler,
-      invocationArgs,
+      {},
       createLocalInvocationEvent(),
     ),
     "Execution completed successfully!",

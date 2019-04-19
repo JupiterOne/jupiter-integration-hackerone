@@ -1,16 +1,15 @@
-const { defaults } = require("jest-config");
-
 module.exports = {
   transform: {
-    "^.+\\.ts?$": "ts-jest",
+    "^.+\\.tsx?$": "ts-jest",
   },
   testMatch: ["<rootDir>/src/**/*.test.{js,ts}"],
   collectCoverageFrom: [
     "src/**/*.ts",
     "!src/index.ts",
-    "!src/ProviderClient.ts",
+    "!src/executionHandler.ts",
+    "!src/whitehat-client.d.ts",
   ],
-  moduleFileExtensions: [...defaults.moduleFileExtensions, "ts"],
+  moduleFileExtensions: ["ts", "js"],
   testEnvironment: "node",
   clearMocks: true,
   collectCoverage: true,

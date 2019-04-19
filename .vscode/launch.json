@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Execute Integration Local",
+        "program": "${workspaceFolder}/tools/execute.ts",
+        "preLaunchTask": "tsc: build - tsconfig.json",
+        "sourceMaps": true,
+        "outFiles": ["${workspaceFolder}/build/**/*.js"],
+        "env": {
+            "HACKERONE_API_KEY": "9Ts8WE6xLsoceClXk5y1w8VmF6oICfqOyRP/83is/F0=",
+            "HACKERONE_API_KEY_NAME": "j1_prodsec_integration"
+        }
+      }
+    ]
+  }
