@@ -1,4 +1,4 @@
-# JupiterOne Managed Integration Example
+# JupiterOne Managed Integration HackerOne
 
 [![Build Status](https://travis-ci.org/JupiterOne/managed-integration-example.svg?branch=master)](https://travis-ci.org/JupiterOne/managed-integration-example)
 
