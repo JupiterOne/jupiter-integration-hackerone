@@ -7,15 +7,19 @@ import mockHackerOneClient from "../test/helpers/mockHackerOneClient";
 import invocationValidator from "./invocationValidator";
 import { HackerOneIntegrationInstanceConfig } from "./types";
 
+require('dotenv').config();
 
-jest.mock("@jupiterone/whitehat-client", () => {
+jest.mock("hackerone-client", () => {
   return jest.fn().mockImplementation(() => mockHackerOneClient);
 });
 
-const validConfig: HackerOneIntegrationInstanceConfig = {
-  hackeroneApiKey: "9Ts8WE6xLsoceClXk5y1w8VmF6oICfqOyRP/83is/F0=",
-  hackeroneApiKeyName: "j1_prodsec_integration"
+
+const validintegrationConfig = {
+  hackeroneApiKey: process.env.HACKERONE_API_KEY,
+  hackeroneApiKeyName: process.env.HACKERONE_API_KEY_NAME,
 };
+const validConfig = validintegrationConfig as HackerOneIntegrationInstanceConfig;
+
 
 const invalidConfig: HackerOneIntegrationInstanceConfig = {
   hackeroneApiKey: "idk",

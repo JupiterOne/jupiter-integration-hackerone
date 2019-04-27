@@ -12,10 +12,6 @@
         "preLaunchTask": "tsc: build - tsconfig.json",
         "sourceMaps": true,
         "outFiles": ["${workspaceFolder}/build/**/*.js"],
-        "env": {
-            "HACKERONE_API_KEY": "9Ts8WE6xLsoceClXk5y1w8VmF6oICfqOyRP/83is/F0=",
-            "HACKERONE_API_KEY_NAME": "j1_prodsec_integration"
-        }
       }
     ]
   }

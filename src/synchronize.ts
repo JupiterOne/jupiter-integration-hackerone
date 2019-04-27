@@ -36,11 +36,11 @@ export default async function synchronize(
   const serviceEntities: ServiceEntity[] = [];
   const findingEntities: FindingEntity[] = [];
 
-  var reports = await Hackerone.queryReports('lifeomic');
-  var i, j;
+  let reports = await Hackerone.queryReports('lifeomic');
+  console.log(reports[0][0].attributes);
   
-  for (i = 0; i < reports.length; i++) {
-    for (j = 0; j < reports[i].length; j++) {
+  for (let i = 0; i < reports.length; i++) {
+    for (let j = 0; j < reports[i].length; j++) {
       const service: ServiceEntity = toServiceEntity(reports[i][j])
       const finding: FindingEntity = toFindingEntity(reports[i][j].attributes);
       serviceEntities.push(service);

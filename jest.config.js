@@ -7,7 +7,7 @@ module.exports = {
     "src/**/*.ts",
     "!src/index.ts",
     "!src/executionHandler.ts",
-    "!src/whitehat-client.d.ts",
+    "!src/hackerone-client.d.ts",
   ],
   moduleFileExtensions: ["ts", "js"],
   testEnvironment: "node",

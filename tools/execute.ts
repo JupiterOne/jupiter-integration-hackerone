@@ -6,6 +6,9 @@ import {
 import { createLogger, TRACE } from "bunyan";
 import { executionHandler } from "../src/index";
 
+
+require('dotenv').config();
+
 async function run(): Promise<void> {
   const logger = createLogger({ name: "local", level: TRACE });
 

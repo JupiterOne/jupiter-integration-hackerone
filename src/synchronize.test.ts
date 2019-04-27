@@ -6,7 +6,9 @@ import {
 import mockHackeroneClient from "../test/helpers/mockHackerOneClient";
 import synchronize from "./synchronize";
 
-jest.mock("@jupiterone/whitehat-client", () => {
+require('dotenv').config();
+
+jest.mock("hackerone-client", () => {
   return jest.fn().mockImplementation(() => mockHackeroneClient);
 });
 
@@ -20,11 +22,11 @@ const executionContext = createTestIntegrationExecutionContext();
 const { job: mockIntegrationJob } = createTestIntegrationData();
 
 executionContext.instance.config = {
-  hackeroneApiKey: "9Ts8WE6xLsoceClXk5y1w8VmF6oICfqOyRP/83is/F0=",
-  hackeroneApiKeyName: "j1_prodsec_integration",
+  hackeroneApiKey: process.env.HACKERONE_API_KEY,
+  hackeroneApiKeyName: process.env.HACKERONE_API_KEY_NAME,
 };
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 jest
   .spyOn(executionContext.clients.getClients().graph, "findEntities")
