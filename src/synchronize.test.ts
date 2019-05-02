@@ -1,7 +1,5 @@
+import { createTestIntegrationExecutionContext } from "@jupiterone/jupiter-managed-integration-sdk";
 
-import {
-  createTestIntegrationExecutionContext,
-} from "@jupiterone/jupiter-managed-integration-sdk";
 import mockHackeroneClient from "../test/helpers/mockHackerOneClient";
 import synchronize from "./synchronize";
 
@@ -15,17 +13,13 @@ const persisterOperations = {
   updated: 0,
 };
 
-
-
 test("compiles and runs", async () => {
   const executionContext = createTestIntegrationExecutionContext();
 
   executionContext.instance.config = {
-    hackeroneApiKey: process.env.HACKERONE_API_KEY,
-    hackeroneApiKeyName: process.env.HACKERONE_API_KEY_NAME,
+    hackeroneApiKey: "api-key",
+    hackeroneApiKeyName: "api-key-name",
   };
-
-  jest.setTimeout(60000);
 
   jest
     .spyOn(executionContext.clients.getClients().graph, "findEntities")

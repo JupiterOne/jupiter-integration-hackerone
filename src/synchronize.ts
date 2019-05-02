@@ -1,51 +1,49 @@
-import {
-  IntegrationExecutionContext,
-  IntegrationInvocationEvent,
-  PersisterOperationsResult,
-} from "@jupiterone/jupiter-managed-integration-sdk";
-
 import HackeroneClient from "hackerone-client";
 
 import {
-  toServiceEntity,
-  toFindingEntity,
-  toServiceFindingRelationship
-} from "./converters";
+  IntegrationExecutionContext,
+  PersisterOperationsResult,
+} from "@jupiterone/jupiter-managed-integration-sdk";
 
 import {
-  createOperationsFromFindings,
-} from "./createOperations";
+  toFindingEntity,
+  toServiceEntity,
+  toServiceFindingRelationship,
+} from "./converters";
+import { createOperationsFromFindings } from "./createOperations";
 import {
-  ServiceEntity,
   FindingEntity,
+  HackerOneIntegrationInstanceConfig,
+  ServiceEntity,
   ServiceFindingRelationship,
-  HackerOneIntegrationInstanceConfig
 } from "./types";
 
-
 export default async function synchronize(
-  context: IntegrationExecutionContext<IntegrationInvocationEvent>,
+  context: IntegrationExecutionContext,
 ): Promise<PersisterOperationsResult> {
   const { persister } = context.clients.getClients();
 
   const config = context.instance.config as HackerOneIntegrationInstanceConfig;
-  const Hackerone = new HackeroneClient(config.hackeroneApiKey, config.hackeroneApiKeyName);
+  const Hackerone = new HackeroneClient(
+    config.hackeroneApiKey,
+    config.hackeroneApiKeyName,
+  );
   const serviceFindingRelationships: ServiceFindingRelationship[] = [];
   const serviceEntities: ServiceEntity[] = [];
   const findingEntities: FindingEntity[] = [];
 
-  let reports = await Hackerone.queryReports('lifeomic');
-  console.log(reports[0][0].attributes);
-  
-  for (let i = 0; i < reports.length; i++) {
-    for (let j = 0; j < reports[i].length; j++) {
-      const service: ServiceEntity = toServiceEntity(reports[i][j])
-      const finding: FindingEntity = toFindingEntity(reports[i][j].attributes);
+  const reports = await Hackerone.queryReports("lifeomic");
+
+  for (const reportCollection of reports) {
+    for (const report of reportCollection) {
+      const service: ServiceEntity = toServiceEntity(report);
+      const finding: FindingEntity = toFindingEntity(report.attributes);
       serviceEntities.push(service);
       findingEntities.push(finding);
-      serviceFindingRelationships.push(toServiceFindingRelationship(service, finding));
+      serviceFindingRelationships.push(
+        toServiceFindingRelationship(service, finding),
+      );
     }
-
   }
 
   return persister.publishPersisterOperations(
@@ -53,8 +51,7 @@ export default async function synchronize(
       context,
       serviceEntities,
       findingEntities,
-      serviceFindingRelationships
+      serviceFindingRelationships,
     ),
   );
-
 }

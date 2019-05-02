@@ -2,30 +2,28 @@ import {
   EntityFromIntegration,
   EntityOperation,
   IntegrationExecutionContext,
-  IntegrationInvocationEvent,
   PersisterOperations,
   RelationshipFromIntegration,
   RelationshipOperation,
 } from "@jupiterone/jupiter-managed-integration-sdk";
+
 import {
   HACKERONE_FINDING_ENTITY_TYPE,
   HACKERONE_SERVICE_ENTITY_TYPE,
-  HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE
+  HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE,
 } from "./constants";
 import {
-  ServiceEntity,
   FindingEntity,
+  ServiceEntity,
   ServiceFindingRelationship,
 } from "./types";
 
 export async function createOperationsFromFindings(
-  context: IntegrationExecutionContext<IntegrationInvocationEvent>,
+  context: IntegrationExecutionContext,
   serviceEntities: ServiceEntity[],
   findingEntities: FindingEntity[],
-  serviceFindingRelationships: ServiceFindingRelationship[]
+  serviceFindingRelationships: ServiceFindingRelationship[],
 ): Promise<PersisterOperations> {
-  
-
   const entityOperations = [
     ...(await toEntityOperations(
       context,
@@ -50,9 +48,8 @@ export async function createOperationsFromFindings(
   return [entityOperations, relationshipOperations];
 }
 
-
 async function toEntityOperations<T extends EntityFromIntegration>(
-  context: IntegrationExecutionContext<IntegrationInvocationEvent>,
+  context: IntegrationExecutionContext,
   entities: T[],
   type: string,
 ): Promise<EntityOperation[]> {
@@ -62,7 +59,7 @@ async function toEntityOperations<T extends EntityFromIntegration>(
 }
 
 async function toRelationshipOperations<T extends RelationshipFromIntegration>(
-  context: IntegrationExecutionContext<IntegrationInvocationEvent>,
+  context: IntegrationExecutionContext,
   relationships: T[],
   type: string,
 ): Promise<RelationshipOperation[]> {

@@ -1,6 +1,6 @@
 # JupiterOne Managed Integration HackerOne
 
-[![Build Status](https://travis-ci.org/JupiterOne/managed-integration-example.svg?branch=master)](https://travis-ci.org/JupiterOne/managed-integration-example)
+[![Build Status](https://travis-ci.org/JupiterOne/jupiter-integration-hackerone.svg?branch=master)](https://travis-ci.org/JupiterOne/jupiter-integration-hackerone)
 
 A JupiterOne integration ingests information such as configurations and other
 metadata about digital and physical assets belonging to an organization. The
