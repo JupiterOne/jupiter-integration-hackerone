@@ -21,9 +21,7 @@ test("passes with valid config", async () => {
     },
   });
 
-  await expect(() => {
-    invocationValidator(executionContext);
-  }).not.toThrow();
+  await invocationValidator(executionContext);
 });
 
 test("throws error if no api key name is provided", async () => {
