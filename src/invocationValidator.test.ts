@@ -9,11 +9,10 @@ jest.mock("hackerone-client", () => {
 });
 
 test("passes with valid config", async () => {
-  const validintegrationConfig = {
+  const validConfig: HackerOneIntegrationInstanceConfig = {
     hackeroneApiKey: "api-key",
     hackeroneApiKeyName: "api-key-name",
   };
-  const validConfig = validintegrationConfig as HackerOneIntegrationInstanceConfig;
 
   const executionContext = createTestIntegrationExecutionContext({
     instance: {
@@ -22,6 +21,27 @@ test("passes with valid config", async () => {
   });
 
   await invocationValidator(executionContext);
+});
+
+test("throws when access is denied", async () => {
+  const validConfig: HackerOneIntegrationInstanceConfig = {
+    hackeroneApiKey: "api-key",
+    hackeroneApiKeyName: "api-key-name",
+  };
+
+  const executionContext = createTestIntegrationExecutionContext({
+    instance: {
+      config: validConfig,
+    },
+  });
+
+  mockHackeroneClient.verifyAccess.mockRejectedValue(
+    new Error("verifyAccess failure of any kind"),
+  );
+
+  await expect(invocationValidator(executionContext)).rejects.toThrow(
+    /not be verified/,
+  );
 });
 
 test("throws error if no api key name is provided", async () => {

@@ -28,4 +28,5 @@ const mockReports: Report[][] = [[mockReport1, mockReport2]];
 
 export default {
   queryReports: jest.fn().mockResolvedValue(mockReports),
+  verifyAccess: jest.fn(),
 };
