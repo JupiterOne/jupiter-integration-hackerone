@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - '8'
+  - '10'
+  - '11'
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+
+script: yarn build
+
+deploy:
+  provider: npm
+  email: npm@jupiterone.io
+  api_key:
+    secure: "mU4gpY+0JCeX/WxQSNNa47LtTGECQnKyR3cc/pnRjKDt1Zkt/e4rdS2W+muH2usxWvWVuck+3vILDnZOusACuFzxKXJO56NDhd1jQZqeGUaVuQ3WwzgbBpBVWNoZThYc0Wb4Mq2LTcCSd1mrrqamUFwwxVcpPLa4+SFPe40p/bmpKZS/Yrx6Mf+GvR0z1jgTY8RGfiJQiqOZfxbOnpGgyzFmdTrsELrBrlDo7ulELxwh2p6O+/eFERGoMqCzkXOjuVMFFM7h4zvavKEsIqTXu7TutgHryaBx3gA+9PQozOybk/jSHJVT8TOQnPO9n1mWbNDR1VkzALtgLCCjzqlDF6fiTfevQbXkOTSUWyvpzAMs4Ka/o1jNsm6p2Th+XHFBzpb3qJSQnixkpIYSIGbxxcD9iWl90JkxCkJ+JdkYblyoRHa8V/A2gbJvaDxiPumEWOLHV/wBkUe8CQET61y1NVGdNhs7MnsXq6bS7LkOQ8kf4oLw2Vi7p6oXDLJ9oTVkfW8czFB4ZNgEOcGH44hvO2hS/Pptn0XVcHOTvC7ebkK5ZAC5Yr0gb6ztfSuSGT8cxM5kanUGUXd5h3XQJranky/Z70czc6kT1wlfu/a73+KxF0lOH4Jawj/qX+k3lUgh52IuKrXEghX7NK1JqrXArg6uSeEjsXFtCgIP16H6LMw="
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
+    repo: JupiterOne/jupiter-integration-hackerone
+    node: '8'
