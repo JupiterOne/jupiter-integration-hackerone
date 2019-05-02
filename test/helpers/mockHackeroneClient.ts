@@ -1,7 +1,4 @@
-import { 
-  Report,
-  ReportAttribute
-} from "../../src/converters";
+import { Report, ReportAttribute } from "../../src/converters";
 
 const mockAtt1: ReportAttribute = {
   title: "Bad Finding",
@@ -19,7 +16,7 @@ const mockReport1: Report = {
   id: "12345",
   type: "report",
   attributes: mockAtt1,
-}
+};
 
 const mockReport2: Report = {
   id: "67890",
@@ -27,8 +24,7 @@ const mockReport2: Report = {
   attributes: mockAtt2,
 };
 
-const mockReports: Report[][] = [[mockReport1, mockReport2]];  
-
+const mockReports: Report[][] = [[mockReport1, mockReport2]];
 
 export default {
   queryReports: jest.fn().mockResolvedValue(mockReports),

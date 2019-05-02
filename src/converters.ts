@@ -1,31 +1,29 @@
 import {
   HACKERONE_FINDING_ENTITY_TYPE,
   HACKERONE_SERVICE_ENTITY_TYPE,
-  HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE
+  HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE,
 } from "./constants";
 import {
-  ServiceEntity,
   FindingEntity,
-  ServiceFindingRelationship
+  ServiceEntity,
+  ServiceFindingRelationship,
 } from "./types";
-
 
 export interface QueryResult {
   data: Report[];
 }
 
 export interface Report {
-  id: string,
-  type: string,
-  attributes: ReportAttribute
+  id: string;
+  type: string;
+  attributes: ReportAttribute;
 }
 
 export interface ReportAttribute {
-  title: string,
-  vulnerability_information: string,
-  state: string
+  title: string;
+  vulnerability_information: string;
+  state: string;
 }
-
 
 export function toServiceEntity(report: Report): ServiceEntity {
   return {
@@ -34,10 +32,9 @@ export function toServiceEntity(report: Report): ServiceEntity {
     _type: HACKERONE_SERVICE_ENTITY_TYPE,
     category: "other",
     id: report.id,
-    type: report.type
+    type: report.type,
   };
 }
-
 
 export function toFindingEntity(finding: ReportAttribute): FindingEntity {
   return {
@@ -48,10 +45,8 @@ export function toFindingEntity(finding: ReportAttribute): FindingEntity {
     title: finding.title,
     vulnerability_information: finding.vulnerability_information,
     state: finding.state,
-
   };
 }
-
 
 export function toServiceFindingRelationship(
   serviceEntity: ServiceEntity,
