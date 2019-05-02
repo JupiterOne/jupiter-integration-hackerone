@@ -1,6 +1,6 @@
 import { createTestIntegrationExecutionContext } from "@jupiterone/jupiter-managed-integration-sdk";
 
-import mockHackeroneClient from "../test/helpers/mockHackerOneClient";
+import mockHackeroneClient from "../test/helpers/mockHackeroneClient";
 import synchronize from "./synchronize";
 
 jest.mock("hackerone-client", () => {

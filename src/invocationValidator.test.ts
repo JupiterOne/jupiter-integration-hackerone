@@ -1,11 +1,11 @@
 import { createTestIntegrationExecutionContext } from "@jupiterone/jupiter-managed-integration-sdk";
 
-import mockHackerOneClient from "../test/helpers/mockHackerOneClient";
+import mockHackeroneClient from "../test/helpers/mockHackeroneClient";
 import invocationValidator from "./invocationValidator";
 import { HackerOneIntegrationInstanceConfig } from "./types";
 
 jest.mock("hackerone-client", () => {
-  return jest.fn().mockImplementation(() => mockHackerOneClient);
+  return jest.fn().mockImplementation(() => mockHackeroneClient);
 });
 
 test("passes with valid config", async () => {
