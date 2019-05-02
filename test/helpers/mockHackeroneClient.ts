@@ -27,10 +27,9 @@ const mockReport2: Report = {
   attributes: mockAtt2,
 };
 
-const mockReports: Report[][] = [[mockReport1, mockReport2]];
+const mockReports: Report[][] = [[mockReport1, mockReport2]];  
 
 
 export default {
-  getFindings: jest.fn().mockResolvedValue(mockAtt1),
-  getResources: jest.fn().mockResolvedValue(mockReports),
+  queryReports: jest.fn().mockResolvedValue(mockReports),
 };

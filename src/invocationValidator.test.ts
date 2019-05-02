@@ -1,7 +1,6 @@
 
 import {
   createTestIntegrationExecutionContext,
-  IntegrationInstanceAuthenticationError
 } from "@jupiterone/jupiter-managed-integration-sdk";
 import mockHackerOneClient from "../test/helpers/mockHackerOneClient";
 import invocationValidator from "./invocationValidator";
@@ -14,39 +13,14 @@ jest.mock("hackerone-client", () => {
 });
 
 
-const validintegrationConfig = {
-  hackeroneApiKey: process.env.HACKERONE_API_KEY,
-  hackeroneApiKeyName: process.env.HACKERONE_API_KEY_NAME,
-};
-const validConfig = validintegrationConfig as HackerOneIntegrationInstanceConfig;
-
-
-const invalidConfig: HackerOneIntegrationInstanceConfig = {
-  hackeroneApiKey: "idk",
-  hackeroneApiKeyName: "not_real"
-};
-
-const noNameConfig: HackerOneIntegrationInstanceConfig = {
-  hackeroneApiKey: "9Ts8WE6xLsoceClXk5y1w8VmF6oICfqOyRP/83is/F0=",
-  hackeroneApiKeyName: ""
-};
-
-
-
-test("fails with invalid config", async () => {
-  const executionContext = createTestIntegrationExecutionContext({
-    instance: {
-      config: invalidConfig,
-    },
-  });
-
-  await expect(invocationValidator(executionContext)).rejects.toThrow(
-    IntegrationInstanceAuthenticationError
-  );
-});
-
 
 test("passes with valid config", async () => {
+  const validintegrationConfig = {
+    hackeroneApiKey: process.env.HACKERONE_API_KEY,
+    hackeroneApiKeyName: process.env.HACKERONE_API_KEY_NAME,
+  };
+  const validConfig = validintegrationConfig as HackerOneIntegrationInstanceConfig;
+
   const executionContext = createTestIntegrationExecutionContext({
     instance: {
       config: validConfig,
@@ -60,6 +34,11 @@ test("passes with valid config", async () => {
   
 
 test("throws error if no api key name is provided", async () => {
+  const noNameConfig: HackerOneIntegrationInstanceConfig = {
+    hackeroneApiKey: "keydatastuff",
+    hackeroneApiKeyName: ""
+  };
+
   const executionContext = createTestIntegrationExecutionContext({
     instance: {
       config: noNameConfig,
@@ -70,12 +49,14 @@ test("throws error if no api key name is provided", async () => {
   );
 });
 
+
 test("throws error if config not provided", async () => {
   const executionContext = createTestIntegrationExecutionContext();
   await expect(invocationValidator(executionContext)).rejects.toThrow(
     "Missing configuration",
   );
 });
+
 
 test("throws error if API key is not provided in instance config", async () => {
   const executionContext = createTestIntegrationExecutionContext({
@@ -87,20 +68,3 @@ test("throws error if API key is not provided in instance config", async () => {
     "hackeroneApiKey is required",
   );
 });
-
-test("throws error if hackerone responds with error to resource call", async () => {
-  const executionContext = createTestIntegrationExecutionContext({
-    instance: {
-      config: validConfig,
-    },
-  });
-
-  mockHackerOneClient.getResources = jest.fn().mockImplementation(() => {
-    throw new Error("401");
-  });
-
-  await expect(invocationValidator(executionContext)).rejects.toThrow(
-    Error,
-  );
-});
-

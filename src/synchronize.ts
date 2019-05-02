@@ -3,16 +3,14 @@ import {
   IntegrationInvocationEvent,
   PersisterOperationsResult,
 } from "@jupiterone/jupiter-managed-integration-sdk";
-import HackeroneClient from "hackerone-client";
 
+import HackeroneClient from "hackerone-client";
 
 import {
   toServiceEntity,
   toFindingEntity,
   toServiceFindingRelationship
 } from "./converters";
-
-
 
 import {
   createOperationsFromFindings,
@@ -28,7 +26,7 @@ import {
 export default async function synchronize(
   context: IntegrationExecutionContext<IntegrationInvocationEvent>,
 ): Promise<PersisterOperationsResult> {
-  const { persister, jobs } = context.clients.getClients();
+  const { persister } = context.clients.getClients();
 
   const config = context.instance.config as HackerOneIntegrationInstanceConfig;
   const Hackerone = new HackeroneClient(config.hackeroneApiKey, config.hackeroneApiKeyName);
@@ -48,18 +46,6 @@ export default async function synchronize(
       serviceFindingRelationships.push(toServiceFindingRelationship(service, finding));
     }
 
-  }
-  
-  const queryParams = ["query_status=open,closed"];
-
-  const lastJob = await jobs.getLastCompleted();
-  if (lastJob) {
-    const lastJobCreatedDate = new Date(lastJob.createDate).toISOString();
-    queryParams.push(
-      `query_opened_after=${lastJobCreatedDate}`,
-      `query_closed_after=${lastJobCreatedDate}`,
-      `query_found_after=${lastJobCreatedDate}`,
-    );
   }
 
   return persister.publishPersisterOperations(
