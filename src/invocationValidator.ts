@@ -26,7 +26,7 @@ export default async function invocationValidator(
     config.hackeroneApiKeyName,
   );
   try {
-    await provider.getResources();
+    await provider.verifyAccess();
   } catch (err) {
     throw new IntegrationInstanceAuthenticationError(err);
   }

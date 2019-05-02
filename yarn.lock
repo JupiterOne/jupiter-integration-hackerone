@@ -2275,10 +2275,10 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
-hackerone-client@^1.0.3:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/hackerone-client/-/hackerone-client-1.0.4.tgz#5287f417553ffb781787fdad5d6976015707ea1b"
-  integrity sha512-g++kVXjCJsyCaAXEUa5IAvVNVE0576HoivikuLHo/CPwEjt3MpshyDBt2y6QdzNLIq0Evhj4y7Zu6H9PN7yEqA==
+hackerone-client@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/hackerone-client/-/hackerone-client-1.0.5.tgz#ea140ed9a2aa22ba0436d1e1a73ce2b08484ac92"
+  integrity sha512-rFx6Cx0XXB7ZEU3PuPOlYnwVAUbnGImCJAD6tiGXqclkBgYRry3rh4LJU83lfqZSuBzabJmbgO2elDhjF2ManA==
   dependencies:
     request "^2.88.0"
     request-promise-native "^1.0.7"

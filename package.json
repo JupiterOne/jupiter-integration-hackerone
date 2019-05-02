@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "global": "^4.3.2",
-    "hackerone-client": "^1.0.3"
+    "hackerone-client": "^1.0.5"
   },
   "peerDependencies": {
     "@jupiterone/jupiter-managed-integration-sdk": "^23.0.2"
