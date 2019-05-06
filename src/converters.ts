@@ -115,7 +115,12 @@ export function toFindingEntity(report: Report): FindingEntity {
   };
 }
 
-export function toVulnerabilityEntity(cveId: string): VulnerabilityEntity {
+export function toVulnerabilityEntity(
+  cveId: string,
+): VulnerabilityEntity | undefined {
+  if (!cveId.toLowerCase().startsWith("cve-")) {
+    return undefined;
+  }
   return {
     _key: cveId.toLowerCase(),
     _type: "cve",
