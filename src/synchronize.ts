@@ -38,7 +38,7 @@ export default async function synchronize(
   const service: ServiceEntity = {
     _key: `hackerone:${config.hackeroneProgramHandle}`,
     _type: HACKERONE_SERVICE_ENTITY_TYPE,
-    _class: "Service",
+    _class: ["Service", "Assessment"],
     displayName: `HackerOne Bounty Program for ${
       config.hackeroneProgramHandle
     }`,
