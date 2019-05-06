@@ -39,7 +39,9 @@ export default async function synchronize(
     _key: `hackerone:${config.hackeroneProgramHandle}`,
     _type: HACKERONE_SERVICE_ENTITY_TYPE,
     _class: "Service",
-    displayName: `hackerone:${config.hackeroneProgramHandle}`,
+    displayName: `HackerOne Bounty Program for ${
+      config.hackeroneProgramHandle
+    }`,
     category: "bug-bounty",
     handle: config.hackeroneProgramHandle,
   };
