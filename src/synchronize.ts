@@ -5,6 +5,7 @@ import {
   PersisterOperationsResult,
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
+import { HACKERONE_SERVICE_ENTITY_TYPE } from "./constants";
 import { toFindingEntity, toServiceFindingRelationship } from "./converters";
 import { createOperationsFromFindings } from "./createOperations";
 import {
@@ -27,7 +28,7 @@ export default async function synchronize(
 
   const service: ServiceEntity = {
     _key: `hackerone:${config.hackeroneProgramHandle}`,
-    _type: "hackerone_program",
+    _type: HACKERONE_SERVICE_ENTITY_TYPE,
     _class: "Service",
     category: "bug-bounty",
     handle: config.hackeroneProgramHandle,
