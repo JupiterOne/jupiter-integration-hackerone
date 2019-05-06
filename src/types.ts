@@ -1,5 +1,6 @@
 import {
   EntityFromIntegration,
+  MappedRelationshipFromIntegration,
   RelationshipFromIntegration,
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
@@ -34,7 +35,19 @@ export interface FindingEntity extends EntityFromIntegration {
   interaction?: string;
 }
 
+export interface WeaknessEntity extends EntityFromIntegration {
+  name: string;
+  description: string;
+}
+
+export interface AttackEntity extends EntityFromIntegration {
+  name: string;
+  description: string;
+}
+
 export type ServiceFindingRelationship = RelationshipFromIntegration;
+
+export type FindingWeaknessRelationship = MappedRelationshipFromIntegration;
 
 export interface HackerOneIntegrationInstanceConfig {
   hackeroneApiKey: string;

@@ -2,18 +2,21 @@ import {
   EntityFromIntegration,
   EntityOperation,
   IntegrationExecutionContext,
+  MappedRelationshipFromIntegration,
   PersisterOperations,
   RelationshipFromIntegration,
   RelationshipOperation,
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
 import {
+  HACKERONE_FINDING_WEAKNESS_RELATIONSHIP_TYPE,
   HACKERONE_REPORT_ENTITY_TYPE,
   HACKERONE_SERVICE_ENTITY_TYPE,
   HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE,
 } from "./constants";
 import {
   FindingEntity,
+  FindingWeaknessRelationship,
   ServiceEntity,
   ServiceFindingRelationship,
 } from "./types";
@@ -23,6 +26,7 @@ export async function createOperationsFromFindings(
   serviceEntities: ServiceEntity[],
   findingEntities: FindingEntity[],
   serviceFindingRelationships: ServiceFindingRelationship[],
+  findingWeaknessRelationships: FindingWeaknessRelationship[],
 ): Promise<PersisterOperations> {
   const entityOperations = [
     ...(await toEntityOperations(
@@ -43,6 +47,11 @@ export async function createOperationsFromFindings(
       serviceFindingRelationships,
       HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE,
     )),
+    ...(await toMappedRelationshipOperations(
+      context,
+      findingWeaknessRelationships,
+      HACKERONE_FINDING_WEAKNESS_RELATIONSHIP_TYPE,
+    )),
   ];
 
   return [entityOperations, relationshipOperations];
@@ -59,6 +68,18 @@ async function toEntityOperations<T extends EntityFromIntegration>(
 }
 
 async function toRelationshipOperations<T extends RelationshipFromIntegration>(
+  context: IntegrationExecutionContext,
+  relationships: T[],
+  type: string,
+): Promise<RelationshipOperation[]> {
+  const { graph, persister } = context.clients.getClients();
+  const oldRelationships = await graph.findRelationshipsByType(type);
+  return persister.processRelationships(oldRelationships, relationships);
+}
+
+async function toMappedRelationshipOperations<
+  T extends MappedRelationshipFromIntegration
+>(
   context: IntegrationExecutionContext,
   relationships: T[],
   type: string,
