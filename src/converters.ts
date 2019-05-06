@@ -56,6 +56,7 @@ export function toFindingEntity(report: Report): FindingEntity {
       severity: relationships.severity.rating,
       score: relationships.severity.score,
       scope: relationships.severity.scope,
+      targets: relationships.severity.scope,
       numericSeverity: relationships.severity.score,
       vector: relationships.severity.attack_vector,
       complexity: relationships.severity.attack_complexity,

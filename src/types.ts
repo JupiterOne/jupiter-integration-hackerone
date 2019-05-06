@@ -22,8 +22,9 @@ export interface FindingEntity extends EntityFromIntegration {
   closedOn?: number;
   severity?: string;
   score?: number | null;
-  scope?: string | null;
   numericSeverity?: number | null;
+  scope?: string | null;
+  targets?: string | string[] | null;
   vector?: string;
   complexity?: string;
   confidentiality?: string;
