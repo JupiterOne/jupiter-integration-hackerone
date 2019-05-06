@@ -19,11 +19,16 @@ export default async function invocationValidator(
     throw new IntegrationInstanceConfigError("hackeroneApiKey is required");
   } else if (!config.hackeroneApiKeyName) {
     throw new IntegrationInstanceConfigError("hackeroneApiKeyName is required");
+  } else if (!config.hackeroneProgramHandle) {
+    throw new IntegrationInstanceConfigError(
+      "hackeroneProgramHandle is required",
+    );
   }
 
   const provider = new HackeroneClient(
     config.hackeroneApiKey,
     config.hackeroneApiKeyName,
+    config.hackeroneProgramHandle,
   );
   try {
     await provider.verifyAccess();
