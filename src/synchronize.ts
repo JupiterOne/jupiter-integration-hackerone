@@ -9,12 +9,15 @@ import { HACKERONE_SERVICE_ENTITY_TYPE } from "./constants";
 import {
   toFindingEntity,
   toServiceFindingRelationship,
+  toVulnerabilityEntity,
+  toVulnerabilityRelationship,
   toWeaknessEntity,
   toWeaknessRelationship,
 } from "./converters";
 import { createOperationsFromFindings } from "./createOperations";
 import {
   FindingEntity,
+  FindingVulnerabilityRelationship,
   FindingWeaknessRelationship,
   HackerOneIntegrationInstanceConfig,
   ServiceEntity,
@@ -40,6 +43,7 @@ export default async function synchronize(
     handle: config.hackeroneProgramHandle,
   };
   const serviceFindingRelationships: ServiceFindingRelationship[] = [];
+  const findingVulnerabilityRelationships: FindingVulnerabilityRelationship[] = [];
   const findingWeaknessRelationships: FindingWeaknessRelationship[] = [];
   const serviceEntities: ServiceEntity[] = [service];
   const findingEntities: FindingEntity[] = [];
@@ -53,6 +57,14 @@ export default async function synchronize(
       serviceFindingRelationships.push(
         toServiceFindingRelationship(service, finding),
       );
+      for (const cveId of report.attributes.cve_ids || []) {
+        const vuln = toVulnerabilityEntity(cveId);
+        if (vuln) {
+          findingVulnerabilityRelationships.push(
+            toVulnerabilityRelationship(finding, vuln),
+          );
+        }
+      }
       if (report.relationships.weakness) {
         const weakness = toWeaknessEntity(report.relationships.weakness);
         if (weakness) {
@@ -70,6 +82,7 @@ export default async function synchronize(
       serviceEntities,
       findingEntities,
       serviceFindingRelationships,
+      findingVulnerabilityRelationships,
       findingWeaknessRelationships,
     ),
   );
