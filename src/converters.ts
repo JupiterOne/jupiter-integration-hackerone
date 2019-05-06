@@ -134,7 +134,7 @@ export function toWeaknessEntity(
   weakness: Weakness,
 ): WeaknessEntity | AttackEntity | undefined {
   const attributes = weakness.attributes;
-  if (attributes.external_id) {
+  if (attributes && attributes.external_id) {
     const id = attributes.external_id.toLowerCase();
     if (id.startsWith("cwe-")) {
       return {
