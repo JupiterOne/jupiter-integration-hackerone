@@ -4,6 +4,7 @@ import {
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
 import {
+  HACKERONE_FINDING_VULNERABILITY_RELATIONSHIP_TYPE,
   HACKERONE_FINDING_WEAKNESS_RELATIONSHIP_TYPE,
   HACKERONE_REPORT_ENTITY_TYPE,
   HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE,
@@ -14,6 +15,7 @@ import {
   FindingWeaknessRelationship,
   ServiceEntity,
   ServiceFindingRelationship,
+  VulnerabilityEntity,
   WeaknessEntity,
 } from "./types";
 
@@ -37,6 +39,7 @@ export interface ReportAttributes {
   last_activity_at: Date | null;
   triaged_at: Date | null;
   closed_at: Date | null;
+  cve_ids?: string[];
 }
 
 export interface ReportRelationships {
@@ -112,6 +115,21 @@ export function toFindingEntity(report: Report): FindingEntity {
   };
 }
 
+export function toVulnerabilityEntity(
+  cveId: string,
+): VulnerabilityEntity | undefined {
+  if (!cveId.toLowerCase().startsWith("cve-")) {
+    return undefined;
+  }
+  return {
+    _key: cveId.toLowerCase(),
+    _type: "cve",
+    _class: "Vulnerability",
+    displayName: cveId.toUpperCase(),
+    webLink: `https://nvd.nist.gov/vuln/detail/${cveId}`,
+  };
+}
+
 export function toWeaknessEntity(
   weakness: Weakness,
 ): WeaknessEntity | AttackEntity | undefined {
@@ -168,12 +186,30 @@ function getTime(time: Date | string | undefined | null): number | undefined {
   return time ? new Date(time).getTime() : undefined;
 }
 
+export function toVulnerabilityRelationship(
+  finding: FindingEntity,
+  targetEntity: EntityFromIntegration,
+): FindingWeaknessRelationship {
+  return {
+    _key: `${finding._key}|is|${targetEntity._key}`,
+    _class: "IS",
+    _type: HACKERONE_FINDING_VULNERABILITY_RELATIONSHIP_TYPE,
+    _mapping: {
+      sourceEntityKey: finding._key,
+      relationshipDirection: RelationshipDirection.FORWARD,
+      targetFilterKeys: [["_type", "_key"]],
+      targetEntity,
+    },
+    displayName: "IS",
+  };
+}
+
 export function toWeaknessRelationship(
   finding: FindingEntity,
   targetEntity: EntityFromIntegration,
 ): FindingWeaknessRelationship {
   return {
-    _key: `${finding._key}|exploits|${finding._key}`,
+    _key: `${finding._key}|exploits|${targetEntity._key}`,
     _class: "EXPLOITS",
     _type: HACKERONE_FINDING_WEAKNESS_RELATIONSHIP_TYPE,
     _mapping: {

@@ -35,6 +35,11 @@ export interface FindingEntity extends EntityFromIntegration {
   interaction?: string;
 }
 
+export interface VulnerabilityEntity extends EntityFromIntegration {
+  name?: string;
+  description?: string;
+}
+
 export interface WeaknessEntity extends EntityFromIntegration {
   name: string;
   description: string;
@@ -46,6 +51,8 @@ export interface AttackEntity extends EntityFromIntegration {
 }
 
 export type ServiceFindingRelationship = RelationshipFromIntegration;
+
+export type FindingVulnerabilityRelationship = MappedRelationshipFromIntegration;
 
 export type FindingWeaknessRelationship = MappedRelationshipFromIntegration;
 

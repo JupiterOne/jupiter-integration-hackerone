@@ -9,6 +9,7 @@ const mockAtt1: ReportAttributes = {
   last_activity_at: null,
   triaged_at: null,
   closed_at: null,
+  cve_ids: ["cve-2019-12345", "bogus-cve-id"],
 };
 
 const mockAtt2: ReportAttributes = {

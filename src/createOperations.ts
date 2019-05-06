@@ -9,6 +9,7 @@ import {
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
 import {
+  HACKERONE_FINDING_VULNERABILITY_RELATIONSHIP_TYPE,
   HACKERONE_FINDING_WEAKNESS_RELATIONSHIP_TYPE,
   HACKERONE_REPORT_ENTITY_TYPE,
   HACKERONE_SERVICE_ENTITY_TYPE,
@@ -16,6 +17,7 @@ import {
 } from "./constants";
 import {
   FindingEntity,
+  FindingVulnerabilityRelationship,
   FindingWeaknessRelationship,
   ServiceEntity,
   ServiceFindingRelationship,
@@ -26,6 +28,7 @@ export async function createOperationsFromFindings(
   serviceEntities: ServiceEntity[],
   findingEntities: FindingEntity[],
   serviceFindingRelationships: ServiceFindingRelationship[],
+  findingVulnerabilityRelationships: FindingVulnerabilityRelationship[],
   findingWeaknessRelationships: FindingWeaknessRelationship[],
 ): Promise<PersisterOperations> {
   const entityOperations = [
@@ -46,6 +49,11 @@ export async function createOperationsFromFindings(
       context,
       serviceFindingRelationships,
       HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE,
+    )),
+    ...(await toMappedRelationshipOperations(
+      context,
+      findingVulnerabilityRelationships,
+      HACKERONE_FINDING_VULNERABILITY_RELATIONSHIP_TYPE,
     )),
     ...(await toMappedRelationshipOperations(
       context,
