@@ -6,10 +6,16 @@ import {
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
 import { HACKERONE_SERVICE_ENTITY_TYPE } from "./constants";
-import { toFindingEntity, toServiceFindingRelationship } from "./converters";
+import {
+  toFindingEntity,
+  toServiceFindingRelationship,
+  toWeaknessEntity,
+  toWeaknessRelationship,
+} from "./converters";
 import { createOperationsFromFindings } from "./createOperations";
 import {
   FindingEntity,
+  FindingWeaknessRelationship,
   HackerOneIntegrationInstanceConfig,
   ServiceEntity,
   ServiceFindingRelationship,
@@ -34,6 +40,7 @@ export default async function synchronize(
     handle: config.hackeroneProgramHandle,
   };
   const serviceFindingRelationships: ServiceFindingRelationship[] = [];
+  const findingWeaknessRelationships: FindingWeaknessRelationship[] = [];
   const serviceEntities: ServiceEntity[] = [service];
   const findingEntities: FindingEntity[] = [];
 
@@ -41,11 +48,19 @@ export default async function synchronize(
 
   for (const reportCollection of reports) {
     for (const report of reportCollection) {
-      const finding: FindingEntity = toFindingEntity(report);
+      const finding = toFindingEntity(report);
       findingEntities.push(finding);
       serviceFindingRelationships.push(
         toServiceFindingRelationship(service, finding),
       );
+      if (report.relationships.weakness) {
+        const weakness = toWeaknessEntity(report.relationships.weakness);
+        if (weakness) {
+          findingWeaknessRelationships.push(
+            toWeaknessRelationship(finding, weakness),
+          );
+        }
+      }
     }
   }
 
@@ -55,6 +70,7 @@ export default async function synchronize(
       serviceEntities,
       findingEntities,
       serviceFindingRelationships,
+      findingWeaknessRelationships,
     ),
   );
 }
