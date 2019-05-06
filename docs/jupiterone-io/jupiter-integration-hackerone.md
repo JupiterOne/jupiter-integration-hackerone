@@ -21,15 +21,15 @@ The following entity resources are ingested when the integration runs:
 
 | Example Entity Resource | \_type : \_class of the Entity  |
 | ----------------------- | ------------------------------- |
-| Report                  | `hackerone_report` : `Service`  |
-| Finding                 | `hackerone_finding` : `Finding` |
+| Program                 | `hackerone_program` : `Service` |
+| Finding Report          | `hackerone_finding` : `Finding` |
 
 ## Relationships
 
 The following relationships are created/mapped:
 
-| From               | Type    | To                  |
-| ------------------ | ------- | ------------------- |
-| `hackerone_report` | **HAS** | `hackerone_finding` |
+| From                | Relationship   | To                  |
+| ------------------- | -------------- | ------------------- |
+| `hackerone_program` | **IDENTIFIED** | `hackerone_finding` |
 
-[1]: https://jupiterone.io/
+[1]: https://docs.hackerone.com/programs/api-tokens.html
