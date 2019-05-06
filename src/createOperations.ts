@@ -8,7 +8,7 @@ import {
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
 import {
-  HACKERONE_FINDING_ENTITY_TYPE,
+  HACKERONE_REPORT_ENTITY_TYPE,
   HACKERONE_SERVICE_ENTITY_TYPE,
   HACKERONE_SERVICE_FINDING_RELATIONSHIP_TYPE,
 } from "./constants";
@@ -33,7 +33,7 @@ export async function createOperationsFromFindings(
     ...(await toEntityOperations(
       context,
       findingEntities,
-      HACKERONE_FINDING_ENTITY_TYPE,
+      HACKERONE_REPORT_ENTITY_TYPE,
     )),
   ];
 

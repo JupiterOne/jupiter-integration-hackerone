@@ -5,14 +5,32 @@ import {
 
 export interface ServiceEntity extends EntityFromIntegration {
   category: string;
-  id: string;
-  type: string;
+  handle: string;
 }
 
 export interface FindingEntity extends EntityFromIntegration {
   state: string;
-  vulnerability_information: string;
+  details: string;
   title: string;
+  id: string;
+  type: string;
+  open: boolean;
+  createdOn?: number;
+  disclosedOn?: number;
+  updatedOn?: number;
+  triagedOn?: number;
+  closedOn?: number;
+  severity?: string;
+  score?: number | null;
+  scope?: string | null;
+  numericSeverity?: number | null;
+  vector?: string;
+  complexity?: string;
+  confidentiality?: string;
+  integrity?: string;
+  availability?: string;
+  privileges?: string;
+  interaction?: string;
 }
 
 export type ServiceFindingRelationship = RelationshipFromIntegration;
@@ -20,4 +38,5 @@ export type ServiceFindingRelationship = RelationshipFromIntegration;
 export interface HackerOneIntegrationInstanceConfig {
   hackeroneApiKey: string;
   hackeroneApiKeyName: string;
+  hackeroneProgramHandle: string;
 }

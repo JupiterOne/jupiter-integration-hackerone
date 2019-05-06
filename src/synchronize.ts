@@ -5,11 +5,8 @@ import {
   PersisterOperationsResult,
 } from "@jupiterone/jupiter-managed-integration-sdk";
 
-import {
-  toFindingEntity,
-  toServiceEntity,
-  toServiceFindingRelationship,
-} from "./converters";
+import { HACKERONE_SERVICE_ENTITY_TYPE } from "./constants";
+import { toFindingEntity, toServiceFindingRelationship } from "./converters";
 import { createOperationsFromFindings } from "./createOperations";
 import {
   FindingEntity,
@@ -28,17 +25,23 @@ export default async function synchronize(
     config.hackeroneApiKey,
     config.hackeroneApiKeyName,
   );
+
+  const service: ServiceEntity = {
+    _key: `hackerone:${config.hackeroneProgramHandle}`,
+    _type: HACKERONE_SERVICE_ENTITY_TYPE,
+    _class: "Service",
+    category: "bug-bounty",
+    handle: config.hackeroneProgramHandle,
+  };
   const serviceFindingRelationships: ServiceFindingRelationship[] = [];
-  const serviceEntities: ServiceEntity[] = [];
+  const serviceEntities: ServiceEntity[] = [service];
   const findingEntities: FindingEntity[] = [];
 
-  const reports = await Hackerone.queryReports("lifeomic");
+  const reports = await Hackerone.queryReports(config.hackeroneProgramHandle);
 
   for (const reportCollection of reports) {
     for (const report of reportCollection) {
-      const service: ServiceEntity = toServiceEntity(report);
-      const finding: FindingEntity = toFindingEntity(report.attributes);
-      serviceEntities.push(service);
+      const finding: FindingEntity = toFindingEntity(report);
       findingEntities.push(finding);
       serviceFindingRelationships.push(
         toServiceFindingRelationship(service, finding),

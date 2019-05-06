@@ -12,6 +12,7 @@ test("passes with valid config", async () => {
   const validConfig: HackerOneIntegrationInstanceConfig = {
     hackeroneApiKey: "api-key",
     hackeroneApiKeyName: "api-key-name",
+    hackeroneProgramHandle: "security",
   };
 
   const executionContext = createTestIntegrationExecutionContext({
@@ -27,6 +28,7 @@ test("throws when access is denied", async () => {
   const validConfig: HackerOneIntegrationInstanceConfig = {
     hackeroneApiKey: "api-key",
     hackeroneApiKeyName: "api-key-name",
+    hackeroneProgramHandle: "security",
   };
 
   const executionContext = createTestIntegrationExecutionContext({
@@ -48,6 +50,7 @@ test("throws error if no api key name is provided", async () => {
   const noNameConfig: HackerOneIntegrationInstanceConfig = {
     hackeroneApiKey: "keydatastuff",
     hackeroneApiKeyName: "",
+    hackeroneProgramHandle: "security",
   };
 
   const executionContext = createTestIntegrationExecutionContext({
@@ -57,6 +60,23 @@ test("throws error if no api key name is provided", async () => {
   });
   await expect(invocationValidator(executionContext)).rejects.toThrow(
     "hackeroneApiKeyName is required",
+  );
+});
+
+test("throws error if no program handle is provided", async () => {
+  const noNameConfig: HackerOneIntegrationInstanceConfig = {
+    hackeroneApiKey: "keydatastuff",
+    hackeroneApiKeyName: "keyname",
+    hackeroneProgramHandle: "",
+  };
+
+  const executionContext = createTestIntegrationExecutionContext({
+    instance: {
+      config: noNameConfig,
+    },
+  });
+  await expect(invocationValidator(executionContext)).rejects.toThrow(
+    "hackeroneProgramHandle is required",
   );
 });
 
