@@ -7,7 +7,6 @@ import {
 
 import { HACKERONE_SERVICE_ENTITY_TYPE } from "./constants";
 import {
-  Report,
   toFindingEntity,
   toServiceFindingRelationship,
   toWeaknessEntity,
