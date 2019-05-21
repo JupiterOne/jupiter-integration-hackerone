@@ -1,4 +1,4 @@
-import { Report, ReportAttributes } from "../../src/converters";
+import { Bounty, Report, ReportAttributes } from "../../src/converters";
 
 const mockAtt1: ReportAttributes = {
   title: "Bad Finding",
@@ -6,6 +6,7 @@ const mockAtt1: ReportAttributes = {
   state: "resolved",
   created_at: new Date("2016-02-02T04:05:06.000Z"),
   disclosed_at: null,
+  first_program_activity_at: null,
   last_activity_at: null,
   triaged_at: null,
   closed_at: null,
@@ -18,10 +19,22 @@ const mockAtt2: ReportAttributes = {
   state: "resolved",
   created_at: new Date("2016-02-02T04:05:06.000Z"),
   disclosed_at: null,
+  first_program_activity_at: new Date("2016-02-03T04:09:06.000Z"),
   last_activity_at: null,
   triaged_at: null,
   closed_at: null,
 };
+
+const mockBounty: Bounty = {
+  attributes: {
+    awarded_amount: 100,
+    awarded_bonus_amount: 0,
+    created_at: new Date("2016-02-10T04:09:06.000Z"),
+  },
+};
+
+const mockBounties: Bounty[] = [mockBounty];
+const mockBounties2: Bounty[] = [];
 
 const mockReport1: Report = {
   id: "12345",
@@ -29,7 +42,20 @@ const mockReport1: Report = {
   attributes: mockAtt1,
   relationships: {
     severity: {
-      rating: "high",
+      data: {
+        attributes: {
+          rating: "",
+          score: 3,
+          attack_vector: "",
+          attack_complexity: "",
+          privileges_required: "",
+          user_interaction: "",
+          scope: "",
+          confidentiality: "",
+          integrity: "",
+          availability: "",
+        },
+      },
     },
     weakness: {
       id: "1337",
@@ -42,6 +68,27 @@ const mockReport1: Report = {
         external_id: "cwe-352",
       },
     },
+    reporter: {
+      data: {
+        attributes: {
+          username: "string",
+          name: "string",
+          profile_picture: {
+            "260x260": "string",
+          },
+        },
+      },
+    },
+    bounties: {
+      data: mockBounties,
+    },
+    structured_scope: {
+      data: {
+        attributes: {
+          asset_identifier: "",
+        },
+      },
+    },
   },
 };
 
@@ -49,7 +96,22 @@ const mockReport2: Report = {
   id: "67890",
   type: "report",
   attributes: mockAtt2,
-  relationships: {},
+  relationships: {
+    bounties: {
+      data: mockBounties2,
+    },
+    reporter: {
+      data: {
+        attributes: {
+          username: "somehackerguy",
+          name: "Guy Hacker",
+          profile_picture: {
+            "260x260": "fakeurl.picture.com",
+          },
+        },
+      },
+    },
+  },
 };
 
 const mockReport3: Report = {
@@ -57,6 +119,9 @@ const mockReport3: Report = {
   type: "report",
   attributes: mockAtt2,
   relationships: {
+    bounties: {
+      data: mockBounties,
+    },
     weakness: {
       id: "1337",
       type: "weakness",
@@ -67,6 +132,17 @@ const mockReport3: Report = {
         created_at: new Date("2016-02-02T04:05:06.000Z"),
       },
     },
+    reporter: {
+      data: {
+        attributes: {
+          username: "someotherhackerdude",
+          name: "Dude Hacker",
+          profile_picture: {
+            "260x260": "fakeurl2.picture.com",
+          },
+        },
+      },
+    },
   },
 };
 
@@ -75,8 +151,15 @@ const mockReport4: Report = {
   type: "report",
   attributes: mockAtt1,
   relationships: {
+    bounties: {
+      data: mockBounties,
+    },
     severity: {
-      rating: "high",
+      data: {
+        attributes: {
+          rating: "high",
+        },
+      },
     },
     weakness: {
       id: "1234",
@@ -88,6 +171,17 @@ const mockReport4: Report = {
         external_id: "capec-439",
       },
     },
+    reporter: {
+      data: {
+        attributes: {
+          username: "someotherhacker",
+          name: "Hacker",
+          profile_picture: {
+            "260x260": "fakeurl23.picture.com",
+          },
+        },
+      },
+    },
   },
 };
 
@@ -96,8 +190,15 @@ const mockReport5: Report = {
   type: "report",
   attributes: mockAtt1,
   relationships: {
+    bounties: {
+      data: mockBounties,
+    },
     severity: {
-      rating: "high",
+      data: {
+        attributes: {
+          rating: "high",
+        },
+      },
     },
     weakness: {
       id: "1234",
@@ -106,6 +207,17 @@ const mockReport5: Report = {
         description: "unknown",
         created_at: new Date("2016-02-02T04:05:06.000Z"),
         external_id: "unknown-439",
+      },
+    },
+    reporter: {
+      data: {
+        attributes: {
+          username: "man",
+          name: "Man Person",
+          profile_picture: {
+            "260x260": "fakeurl4.picture.com",
+          },
+        },
       },
     },
   },

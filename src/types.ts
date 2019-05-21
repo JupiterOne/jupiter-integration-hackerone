@@ -18,7 +18,8 @@ export interface FindingEntity extends EntityFromIntegration {
   open: boolean;
   createdOn?: number;
   disclosedOn?: number;
-  updatedOn?: number;
+  firstActivityAt?: number; //
+  lastActivityAt?: number; //
   triagedOn?: number;
   closedOn?: number;
   severity?: string;
@@ -33,6 +34,12 @@ export interface FindingEntity extends EntityFromIntegration {
   availability?: string;
   privileges?: string;
   interaction?: string;
+  bountyAmount?: number;
+  bountyBonusAmount?: number;
+  bountyAwardedOn?: number;
+  totalAmountAwarded?: number;
+  hackerAlias: string;
+  hackerProfilePic?: string;
 }
 
 export interface VulnerabilityEntity extends EntityFromIntegration {
