@@ -36,6 +36,7 @@ export interface ReportAttributes {
   state: string;
   created_at: Date | null;
   disclosed_at: Date | null;
+  first_program_activity_at: Date | null;
   last_activity_at: Date | null;
   triaged_at: Date | null;
   closed_at: Date | null;
@@ -45,19 +46,26 @@ export interface ReportAttributes {
 export interface ReportRelationships {
   severity?: Severity;
   weakness?: Weakness;
+  reporter: Reporter;
+  bounties: Bounties;
+  structured_scope?: StructuredScope;
 }
 
 export interface Severity {
-  rating: string;
-  score?: number | null;
-  attack_vector?: string;
-  attack_complexity?: string;
-  privileges_required?: string;
-  user_interaction?: string;
-  scope?: string | null;
-  confidentiality?: string;
-  integrity?: string;
-  availability?: string;
+  data: {
+    attributes: {
+      rating: string;
+      score?: number | null;
+      attack_vector?: string;
+      attack_complexity?: string;
+      privileges_required?: string;
+      user_interaction?: string;
+      scope?: string | null;
+      confidentiality?: string;
+      integrity?: string;
+      availability?: string;
+    };
+  };
 }
 
 export interface Weakness {
@@ -71,26 +79,96 @@ export interface Weakness {
   };
 }
 
+export interface Reporter {
+  data: {
+    attributes: {
+      username: string;
+      name: string;
+      profile_picture: {
+        "260x260": string;
+      };
+    };
+  };
+}
+
+export interface Bounties {
+  data: Bounty[];
+}
+
+export interface Bounty {
+  attributes: {
+    awarded_amount: number;
+    awarded_bonus_amount: number;
+    created_at: Date;
+  };
+}
+
+export interface StructuredScope {
+  data: {
+    attributes: {
+      asset_identifier: string;
+    };
+  };
+}
+
 export function toFindingEntity(report: Report): FindingEntity {
   const attributes: ReportAttributes = report.attributes;
   const relationships: ReportRelationships = report.relationships;
   let details;
+  let target;
+  let bountyAmountAwarded;
+  let bountyBonusAmountAwarded;
+  let bountyAwardedAt;
+  let totalAmount;
   if (relationships.severity) {
     details = {
-      severity: relationships.severity.rating,
-      score: relationships.severity.score,
-      scope: relationships.severity.scope,
-      targets: relationships.severity.scope,
-      numericSeverity: relationships.severity.score,
-      vector: relationships.severity.attack_vector,
-      complexity: relationships.severity.attack_complexity,
-      confidentiality: relationships.severity.confidentiality,
-      integrity: relationships.severity.integrity,
-      availability: relationships.severity.availability,
-      privileges: relationships.severity.privileges_required,
-      interaction: relationships.severity.user_interaction,
+      severity: relationships.severity.data.attributes.rating,
+      score: relationships.severity.data.attributes.score,
+      scope: relationships.severity.data.attributes.scope,
+      numericSeverity: relationships.severity.data.attributes.score,
+      vector: relationships.severity.data.attributes.attack_vector,
+      complexity: relationships.severity.data.attributes.attack_complexity,
+      confidentiality: relationships.severity.data.attributes.confidentiality,
+      integrity: relationships.severity.data.attributes.integrity,
+      availability: relationships.severity.data.attributes.availability,
+      privileges: relationships.severity.data.attributes.privileges_required,
+      interaction: relationships.severity.data.attributes.user_interaction,
+    };
+  } else {
+    details = {
+      severity: "",
+      score: null,
+      scope: null,
+      numericSeverity: null,
+      vector: "",
+      complexity: "",
+      confidentiality: "",
+      integrity: "",
+      availability: "",
+      privileges: "",
+      interaction: "",
     };
   }
+
+  if (relationships.bounties.data.length >= 1) {
+    bountyAmountAwarded =
+      relationships.bounties.data[0].attributes.awarded_amount;
+    bountyBonusAmountAwarded =
+      relationships.bounties.data[0].attributes.awarded_bonus_amount;
+    bountyAwardedAt = relationships.bounties.data[0].attributes.created_at;
+  } else {
+    bountyAmountAwarded = 0;
+    bountyBonusAmountAwarded = 0;
+    bountyAwardedAt = null;
+  }
+  totalAmount = Number(bountyAmountAwarded) + Number(bountyBonusAmountAwarded);
+
+  if (relationships.structured_scope) {
+    target = relationships.structured_scope.data.attributes.asset_identifier;
+  } else {
+    target = null;
+  }
+
   return {
     _class: "Finding",
     _key: `hackerone-report-${report.id}`,
@@ -107,10 +185,20 @@ export function toFindingEntity(report: Report): FindingEntity {
       attributes.state === "needs-more-info",
     createdOn: getTime(attributes.created_at),
     disclosedOn: getTime(attributes.disclosed_at),
-    updatedOn: getTime(attributes.last_activity_at),
+    firstActivityAt: getTime(attributes.first_program_activity_at),
+    lastActivityAt: getTime(attributes.last_activity_at),
     triagedOn: getTime(attributes.triaged_at),
     closedOn: getTime(attributes.closed_at),
+    bountyAmount: bountyAmountAwarded,
+    bountyBonusAmount: bountyBonusAmountAwarded,
+    totalAmountAwarded: totalAmount,
+    bountyAwardedOn: getTime(bountyAwardedAt),
+    hackerAlias: relationships.reporter.data.attributes.username,
+    hackerProfilePic:
+      relationships.reporter.data.attributes.profile_picture["260x260"],
     webLink: `https://hackerone.com/bugs?report_id=${report.id}`,
+    scope: details.scope,
+    targets: target,
     ...details,
   };
 }
