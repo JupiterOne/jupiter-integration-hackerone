@@ -1,6 +1,6 @@
 # JupiterOne Managed Integration HackerOne
 
-[![Build Status](https://travis-ci.org/JupiterOne/jupiter-integration-hackerone.svg?branch=master)](https://travis-ci.org/JupiterOne/jupiter-integration-hackerone)
+[![Build Status](https://travis-ci.org/JupiterOne/jupiter-integration-hackerone.svg?branch=master)](https://travis-ci.org/JupiterOne/jupiter-integration-hackerone) [![Greenkeeper badge](https://badges.greenkeeper.io/JupiterOne/jupiter-integration-hackerone.svg)](https://greenkeeper.io/)
 
 A JupiterOne integration ingests information such as configurations and other
 metadata about digital and physical assets belonging to an organization. The
