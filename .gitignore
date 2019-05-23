@@ -4,5 +4,3 @@ coverage/
 dist/
 yarn-error.log
 .env
-.vscode
-.DS_Store
