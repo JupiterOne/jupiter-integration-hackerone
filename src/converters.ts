@@ -187,6 +187,7 @@ export function toFindingEntity(report: Report): FindingEntity {
     disclosedOn: getTime(attributes.disclosed_at),
     firstActivityAt: getTime(attributes.first_program_activity_at),
     lastActivityAt: getTime(attributes.last_activity_at),
+    updatedOn: getTime(attributes.last_activity_at),
     triagedOn: getTime(attributes.triaged_at),
     closedOn: getTime(attributes.closed_at),
     bountyAmount: bountyAmountAwarded,
