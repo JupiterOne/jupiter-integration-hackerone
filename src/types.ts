@@ -19,7 +19,7 @@ export interface FindingEntity extends EntityFromIntegration {
   createdOn?: number;
   disclosedOn?: number;
   firstActivityAt?: number; //
-  lastActivityAt?: number; //
+  updatedOn?: number; //
   triagedOn?: number;
   closedOn?: number;
   severity?: string;
