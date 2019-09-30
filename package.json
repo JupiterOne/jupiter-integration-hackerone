@@ -1,5 +1,5 @@
 {
-  "name": "@jupiterone/jupiter-integration-hackerone",
+  "name": "@jupiterone/graph-hackerone",
   "version": "0.4.4",
   "description": "A JupiterOne managed integration for https://www.hackerone.com/",
   "main": "dist/index.js",
