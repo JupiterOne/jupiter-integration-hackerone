@@ -20,5 +20,5 @@ deploy:
   on:
     tags: true
     branch: master
-    repo: JupiterOne/jupiter-integration-hackerone
+    repo: JupiterOne/graph-hackerone
     node: '8'
