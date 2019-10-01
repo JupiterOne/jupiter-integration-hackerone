@@ -3,7 +3,7 @@
   "version": "0.4.4",
   "description": "A JupiterOne managed integration for https://www.hackerone.com/",
   "main": "dist/index.js",
-  "repository": "https://github.com/JupiterOne/jupiter-integration-hackerone",
+  "repository": "https://github.com/JupiterOne/graph-hackerone",
   "license": "SEE LICENSE IN LICENSE",
   "files": [
     "LICENSE",
