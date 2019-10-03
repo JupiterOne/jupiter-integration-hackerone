@@ -22,5 +22,8 @@ module.exports = {
       functions: 100,
       lines: 100,
     },
+    "src/converters.ts": {
+      branches: 89,
+    },
   },
 };
