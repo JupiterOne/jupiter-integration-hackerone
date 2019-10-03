@@ -114,25 +114,24 @@ export interface StructuredScope {
 export function toFindingEntity(report: Report): FindingEntity {
   const attributes: ReportAttributes = report.attributes;
   const relationships: ReportRelationships = report.relationships;
+
   let details;
-  let target;
-  let bountyAmountAwarded;
-  let bountyBonusAmountAwarded;
-  let bountyAwardedAt;
-  let totalAmount;
   if (relationships.severity) {
+    const severity =
+      (relationships.severity.data && relationships.severity.data.attributes) ||
+      {};
     details = {
-      severity: relationships.severity.data.attributes.rating,
-      score: relationships.severity.data.attributes.score,
-      scope: relationships.severity.data.attributes.scope,
-      numericSeverity: relationships.severity.data.attributes.score,
-      vector: relationships.severity.data.attributes.attack_vector,
-      complexity: relationships.severity.data.attributes.attack_complexity,
-      confidentiality: relationships.severity.data.attributes.confidentiality,
-      integrity: relationships.severity.data.attributes.integrity,
-      availability: relationships.severity.data.attributes.availability,
-      privileges: relationships.severity.data.attributes.privileges_required,
-      interaction: relationships.severity.data.attributes.user_interaction,
+      severity: severity.rating,
+      score: severity.score,
+      scope: severity.scope,
+      numericSeverity: severity.score,
+      vector: severity.attack_vector,
+      complexity: severity.attack_complexity,
+      confidentiality: severity.confidentiality,
+      integrity: severity.integrity,
+      availability: severity.availability,
+      privileges: severity.privileges_required,
+      interaction: severity.user_interaction,
     };
   } else {
     details = {
@@ -150,24 +149,37 @@ export function toFindingEntity(report: Report): FindingEntity {
     };
   }
 
-  if (relationships.bounties.data.length >= 1) {
-    bountyAmountAwarded =
-      relationships.bounties.data[0].attributes.awarded_amount;
-    bountyBonusAmountAwarded =
-      relationships.bounties.data[0].attributes.awarded_bonus_amount;
-    bountyAwardedAt = relationships.bounties.data[0].attributes.created_at;
+  let bountyAmountAwarded;
+  let bountyBonusAmountAwarded;
+  let bountyAwardedAt;
+
+  const bounties =
+    (relationships.bounties && relationships.bounties.data) || [];
+  if (bounties.length >= 1) {
+    const bounty = (bounties[0] && bounties[0].attributes) || {};
+    bountyAmountAwarded = bounty.awarded_amount;
+    bountyBonusAmountAwarded = bounty.awarded_bonus_amount;
+    bountyAwardedAt = bounty.created_at;
   } else {
     bountyAmountAwarded = 0;
     bountyBonusAmountAwarded = 0;
     bountyAwardedAt = null;
   }
-  totalAmount = Number(bountyAmountAwarded) + Number(bountyBonusAmountAwarded);
+  const totalAmount =
+    Number(bountyAmountAwarded) + Number(bountyBonusAmountAwarded);
 
-  if (relationships.structured_scope) {
-    target = relationships.structured_scope.data.attributes.asset_identifier;
-  } else {
-    target = null;
-  }
+  const scope = (relationships.structured_scope &&
+    relationships.structured_scope.data &&
+    relationships.structured_scope.data.attributes) || {
+    asset_identifier: null,
+  };
+  const target = scope.asset_identifier;
+
+  const reporter =
+    (relationships.reporter &&
+      relationships.reporter.data &&
+      relationships.reporter.data.attributes) ||
+    {};
 
   return {
     _class: "Finding",
@@ -194,9 +206,9 @@ export function toFindingEntity(report: Report): FindingEntity {
     bountyBonusAmount: bountyBonusAmountAwarded,
     totalAmountAwarded: totalAmount,
     bountyAwardedOn: getTime(bountyAwardedAt),
-    hackerAlias: relationships.reporter.data.attributes.username,
+    hackerAlias: reporter.username,
     hackerProfilePic:
-      relationships.reporter.data.attributes.profile_picture["260x260"],
+      reporter.profile_picture && reporter.profile_picture["260x260"],
     webLink: `https://hackerone.com/bugs?report_id=${report.id}`,
     scope: details.scope,
     targets: target,
