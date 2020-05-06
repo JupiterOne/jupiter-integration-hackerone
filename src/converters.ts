@@ -2,7 +2,7 @@ import {
   EntityFromIntegration,
   RelationshipDirection,
 } from "@jupiterone/jupiter-managed-integration-sdk";
-
+import { Entity } from "@jupiterone/jupiter-managed-integration-sdk/jupiter-types";
 import {
   HACKERONE_FINDING_VULNERABILITY_RELATIONSHIP_TYPE,
   HACKERONE_FINDING_WEAKNESS_RELATIONSHIP_TYPE,
