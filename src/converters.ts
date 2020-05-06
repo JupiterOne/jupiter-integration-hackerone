@@ -299,7 +299,7 @@ export function toVulnerabilityRelationship(
       sourceEntityKey: finding._key,
       relationshipDirection: RelationshipDirection.FORWARD,
       targetFilterKeys: [["_type", "_key"]],
-      targetEntity,
+      targetEntity: targetEntity as Partial<Entity>,
     },
     displayName: "IS",
   };
@@ -317,7 +317,7 @@ export function toWeaknessRelationship(
       sourceEntityKey: finding._key,
       relationshipDirection: RelationshipDirection.FORWARD,
       targetFilterKeys: [["_type", "_key"]],
-      targetEntity,
+      targetEntity: targetEntity as Partial<Entity>,
     },
     displayName: "EXPLOITS",
   };
