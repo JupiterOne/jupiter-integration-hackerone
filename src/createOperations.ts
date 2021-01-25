@@ -67,32 +67,32 @@ export async function createOperationsFromFindings(
 
 async function toEntityOperations<T extends EntityFromIntegration>(
   context: IntegrationExecutionContext,
-  entities: T[],
+  newEntities: T[],
   type: string,
 ): Promise<EntityOperation[]> {
   const { graph, persister } = context.clients.getClients();
   const oldEntities = await graph.findEntitiesByType(type);
-  return persister.processEntities(oldEntities, entities);
+  return persister.processEntities({ oldEntities, newEntities });
 }
 
 async function toRelationshipOperations<T extends RelationshipFromIntegration>(
   context: IntegrationExecutionContext,
-  relationships: T[],
+  newRelationships: T[],
   type: string,
 ): Promise<RelationshipOperation[]> {
   const { graph, persister } = context.clients.getClients();
   const oldRelationships = await graph.findRelationshipsByType(type);
-  return persister.processRelationships(oldRelationships, relationships);
+  return persister.processRelationships({ oldRelationships, newRelationships });
 }
 
 async function toMappedRelationshipOperations<
   T extends MappedRelationshipFromIntegration
 >(
   context: IntegrationExecutionContext,
-  relationships: T[],
+  newRelationships: T[],
   type: string,
 ): Promise<RelationshipOperation[]> {
   const { graph, persister } = context.clients.getClients();
   const oldRelationships = await graph.findRelationshipsByType(type);
-  return persister.processRelationships(oldRelationships, relationships);
+  return persister.processRelationships({ oldRelationships, newRelationships });
 }
