@@ -7,6 +7,24 @@ connects directly to HackerOne APIs to obtain account metadata and analyze
 resource relationships. Customers authorize access by creating an API token in
 their target HackerOne account and providing that credential to JupiterOne.
 
+## HackerOne
+
+- Visualize HackerOne bounty programs and submitted findings in the JupiterOne
+  graph. 
+- Monitor HackerOne findings within the alerts app.
+- Monitor changes to HackerOne bounty programs using JupiterOne alerts.
+
+## How it Works
+
+- JupiterOne periodically fetches HackerOne bounty programs and submitted findings to update the graph.
+- Write JupiterOne queries to review and monitor updates to the graph.
+- Configure alerts to take action when the JupiterOne graph changes.
+
+## Requirements
+
+- JupiterOne requires an API key, API key name, and the name/handle of your HackerOne program. 
+- You must have permission in JupiterOne to install new integrations.
+
 ## Integration Instance Configuration
 
 The integration is triggered by an event containing the information for a
