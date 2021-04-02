@@ -7,7 +7,7 @@ connects directly to HackerOne APIs to obtain account metadata and analyze
 resource relationships. Customers authorize access by creating an API token in
 their target HackerOne account and providing that credential to JupiterOne.
 
-## HackerOne
+## HackerOne + JupiterOne Integration Benefits
 
 - Visualize HackerOne bounty programs and submitted findings in the JupiterOne
   graph. 
